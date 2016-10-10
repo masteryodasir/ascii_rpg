@@ -1,0 +1,19 @@
+package test;
+
+public class Map {
+    
+    // Map Dimensions which are constant 
+    // Reason these are all static is cuz they need to be accessed by every other class almost, and are only used / initialized once
+    // figured this would work now, but if theres a better way then good 
+    static final int LENGTH = 8; 
+    static final int WIDTH = 8; 
+    
+    // Border Dimensions used to make initializing the map easier by using variable names 
+    static final int RIGHT_BORDER = 7; 
+    static final int LEFT_BORDER = 0; 
+    static final int TOP_BORDER = 0; 
+    static final int BOTTOM_BORDER = 7; 
+    
+    //map 
+    static char[][] map = new char[LENGTH][WIDTH];
+}
