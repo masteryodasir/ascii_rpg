@@ -34,13 +34,16 @@ public class GameLoop {
              one thing is that if the enemy dies then it still exists but i can't think of way to get rid of it altogether 
             but the enemy sprite turns into an AREA sprite so that it "appears" to be dead, even tho it's still moving around 
             but again, it won't try to battle us since it's hp is below 0 and you can't see it so its like its dead but
-            probably not the best way to do this 
+            probably not the best way to do this
             */
             if (Robotx.getHealth() > 0) {
                 Robotx.collision();
             }
             
             //display results if there was a battle. Whoever died, their sprite turns into an AREA sprite 
+            //Oh and if each check for battle method runs false you will see 2-3 more maps displayed because what's supposed to happen is that
+            //if there is a battle then that loops executes, and at the end the results display so it's like a new map displayed
+            // but i can't figure out how to do this either because there is no "clear screen" like in c++
             Output.displayMap(Ted.getY(), Ted.getX(), Robotx.getY(), Robotx.getX(), Robotx.getHealth(), Robotz.getY(), Robotz.getX(), Robotz.getHealth());
             
             // each object has to check if the player is next to it.. this gets old much like the output.display method overloading 
@@ -51,6 +54,8 @@ public class GameLoop {
             
             Output.displayMap(Ted.getY(), Ted.getX(), Robotx.getY(), Robotx.getX(), Robotx.getHealth(), Robotz.getY(), Robotz.getX(), Robotz.getHealth());
             
+            // this is the code for the view method I was talking about in output class
+            // uncomment this so it doesn't look so wierd 
             Output.view(Ted.getY(), Ted.getX());
             
             // Gameover and end application 
