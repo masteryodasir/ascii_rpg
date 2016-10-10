@@ -1,0 +1,22 @@
+package test; 
+
+import java.util.Random; 
+
+public class Robot extends Enemy {
+    
+    Robot(int y, int x, String z) {
+
+        initRobot(y, x);
+        name = z; 
+    }
+    
+    private void initRobot (int y, int x) {
+        Random rand = new Random();
+        sprite = Sprites.ROBOT; 
+        Map.map[y][x] = sprite; 
+        x_position = x; 
+        y_position = y;
+        enemyHealth = rand.nextInt(maxEnemyHealth);
+    }
+} 
+
