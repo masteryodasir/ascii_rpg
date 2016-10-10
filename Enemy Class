@@ -1,0 +1,245 @@
+package test;
+
+import java.util.Random;
+import java.util.Scanner; 
+
+public class Enemy {
+    
+    protected int x_position = 0; 
+    protected int y_position = 0; 
+    protected int dirX = 0;
+    protected int dirY = 0;
+    
+    int maxEnemyHealth = 25; 
+    int maxAttackDamage = 4; 
+    
+    protected String name; 
+    protected char sprite; 
+    protected int enemyHealth; 
+    
+    String getName() {
+        return name; 
+    }
+    
+    char getSprite() {
+        return sprite; 
+    }
+    
+    int getHealth() {
+        return enemyHealth;
+    }
+    
+    int getX() {
+        return x_position; 
+    }
+    
+    int getY() {
+        return y_position; 
+    }
+    
+    int getDirX() {
+        return dirX;
+    }
+    
+    int getDirY() {
+        return dirY; 
+    }
+    
+    // enemy x direction
+    int getX_Dir(int x, int x_position) {
+        int xx = x_position;
+
+        switch (x) {
+            case Input.LEFT: xx -= 1;
+                break;
+                
+            case Input.RIGHT: xx += 1; 
+                break;
+                
+            case Input.UP: xx = x_position;
+                break;
+                
+            case Input.DOWN: xx = x_position;
+                 break;
+                     
+            default: xx = x_position;       
+        }
+        return xx; 
+    }
+    
+    // enemy y direction 
+    static int getY_Dir(int y, int y_position) {
+        int yy = y_position;
+
+        switch (y) {
+            case Input.UP: yy -= 1;
+                break;
+                
+            case Input.DOWN: yy += 1; 
+                 break;
+            
+            case Input.LEFT: yy = y_position;
+                break;
+                
+            case Input.RIGHT: yy = y_position;
+                break; 
+                
+            default: yy = y_position;        
+        }
+        return yy; 
+    }
+    
+    int getPlayerX() {
+        return Player.getX(); 
+    }
+    
+    int getPlayerY() {
+        return Player.getY(); 
+    }
+    
+    // this is a method i started, but haven't actually gotten far with 
+    // i plan to use this method to allow the enemy object to check to see if the player is in a 
+    // certain proximity of the enemy x and y position. If true then the enemy starts to move closer
+    // to the player otherwise keeps moving randomly around the map 
+    void lineOfSight() {
+        int x = getPlayerX();
+        int y = getPlayerY();
+        
+        if ((x >= (x_position - 4)) && (y >= (y_position - 4))) {
+            
+        } else {}
+    }
+    
+    /* everything in here is basically the same as what i noted about the player class minus a few minor differences. 
+    the only real difference is that the below method creates a random number to be used as the input for desired direction since
+    we don't actually move the player. 
+    */
+    void setPosition() {
+        Random rand = new Random(); 
+        
+        int[] movement = {2, 4, 6, 8}; 
+        int input = movement[rand.nextInt(movement.length)];
+        
+        dirX = getX_Dir(input, x_position);
+        dirY = getY_Dir(input, y_position);
+                
+        char getchar = Map.map[dirY][dirX];
+        
+        /* the code on the line right below this basically checks to make sure that the players 
+        xdir and ydir don't conflict with the random xdir and ydir generated for the enemy otherwise 
+        the following would happen: say the player @ is in the 1,1 map array element and the enemy sprite is 1,3. 
+        well if you input 6 to make the player go right, the players x and y position will be set to 1,2 right between the actual enemy 
+        and player sprite locations. Since the enemy could move to the 1,2 location also because lets say that only an AREA sprite exists 
+        there and those can be overwritten by movement, then the enemy x and y positions will also be 1,2 meaning both objects x and y will be in 
+        the same location. I don't really like that because when the output.display method is called it will then take the new positions and 
+        display them on the map and you will only see the sprite of the last object which moved. In the Gameloop class, you will only see the robot
+        sprite, but if you move left or right again then you will see the player sprite again, but like i said i just don't like that so i created 
+        that algorithm. 
+        
+        I need to figure out how to use a similar algorithm to have the robots not be able to do what i mentioned above cuz as it stands 
+        they are next to eachtother they can't move into the others x and y position, but they can walk into a "middle" array elemnent like 
+        noted above. 
+        */
+        
+        if (dirX == Player.getX() && dirY == Player.getY()) {
+            x_position = getX(); 
+        } else {            
+            if ((dirX != x_position) && (getchar == Sprites.AREA)) {
+                x_position = dirX; 
+            } else {x_position = getX();}
+        }
+
+        if (dirX == Player.getX() && dirY == Player.getY()) {
+            y_position = getY(); 
+        } else {            
+            if ((dirY != y_position) && (getchar == Sprites.AREA)) {
+                y_position = dirY; 
+            } else {y_position = getY();}
+        }
+    }
+    
+    /* this basically checks to see if the player is right, left, up or down of the enemys x adn y position
+    if this is true then the battleplayer method is called and a battle loop begins
+    */
+    void collision() {
+        // left of enemy
+        if ((getPlayerX() == x_position - 1) && (getPlayerY() == y_position)) {
+            battlePlayer(); 
+        }
+        // right of enemy
+        if ((getPlayerX() == x_position + 1) && (getPlayerY() == y_position)) {
+            battlePlayer();
+        }
+        // above enemy
+        if ((getPlayerX() == x_position) && (getPlayerY() == y_position - 1)) {
+            battlePlayer();
+        }
+        // below enemy
+        if ((getPlayerX() == x_position) && (getPlayerY() == y_position + 1)) {
+            battlePlayer();
+        }
+    }
+
+    // the loop in this method stops when either the enemy next to the player dies or the player dies.
+    void battlePlayer() {
+        
+        Scanner in = new Scanner(System.in); 
+        Random rand = new Random(); 
+
+        System.out.println("---------------------------------------------");
+            
+        System.out.println("\t# A " + getName() + " appeared! #\n");      
+        System.out.println("Die insect!");
+            
+        while(enemyHealth > 0) {
+            
+            System.out.println("\t" + Player.getName() + "'s HP: " + Player.getHealth());  
+            System.out.println("\t" + getName() + "'s HP: " + enemyHealth);
+            System.out.println("\n\tWhat would you like to do?");
+            System.out.println("\t1. Attack");
+            System.out.println("\t2. Drink health potion");
+
+            String input = in.nextLine(); 
+                
+            if(input.equals("1")) {
+                int damageDealt = rand.nextInt(Player.getAttack());
+                int damageTaken = rand.nextInt(maxAttackDamage);
+
+                enemyHealth -= damageDealt; 
+                int playerHealth = Player.getHealth() - damageTaken; 
+                Player.setHealth(playerHealth);
+
+                System.out.println("\t> You strike the " + getName() + " for " + damageDealt + " damage.");
+                System.out.println("\t> You receive " + damageTaken + " in retaliation!"); 
+                
+                if(Player.getHealth() <= 0) {
+                    System.out.println("\t> You have died!");
+                    break; 
+                }
+                    
+            } else if(input.equals("2")) {
+                if(Player.getHealthPotions() > 0) {
+                        
+                    int maxHealthPotionHealAmount = 10; 
+                    int heal = rand.nextInt(maxHealthPotionHealAmount);
+                    int health = Player.getHealth() + heal; 
+                    Player.setHealth(health);
+                        
+                    Player.setHealthPotions(Player.getHealthPotions() - 1); 
+                        
+                    System.out.println("\t> You drink a health potion, healing yourself for " + heal + " health points."
+                    + "\n\t> You now have " + Player.getHealth() + " HP."
+                    + "\n\t> You have " + Player.getHealthPotions() + " health potions left.\n");
+                } else {
+                    System.out.println("\t> You have no health potions left! Defeat enemies for a chance to get one!\n");
+                }
+                    
+            } else {
+                System.out.println("\tInvalid command!");
+            }
+        }   
+        if (enemyHealth <= 0) {
+        System.out.println("Ughh! This is not the last of me..");
+        }
+    }
+}
