@@ -1,0 +1,150 @@
+package test;
+
+import java.util.Scanner; 
+
+public class Player {
+    
+    // Player Coordinates
+    static private int x_position = 0; 
+    static private int y_position = 0;
+    
+    /*other player properties, reason I used static is so that the enemy class can access 
+    player variables, methods, etc. Again there may be a better way but considering there 
+    is only ever one player on map I figured that was reasonable 
+    */
+    static private String name; 
+    static private int health;
+    static private int attack; 
+    static private int healthPotions;
+    static private char sprite; 
+    
+        
+    /* the player object has an x and y position since its 2-d game
+    when the player object is created, the constructor initializes the player 
+    sprite to desired map array element and subsequently the x and y positions are
+    created where the sprite was initialized giving it coordinates 
+    additionally the name, player health and amount of healthpotions are 
+    */
+    
+    Player(int y, int x, String z, int hp, int atk, int hpot) {
+        initPlayer(y, x);
+        name = z; 
+        health = hp; 
+        attack = atk;
+        healthPotions = hpot;
+    }
+    
+    //initialize @ on map
+    private void initPlayer (int y, int x) {
+        sprite = Sprites.PLAYER;
+        Map.map[y][x] = sprite; 
+        x_position = x; 
+        y_position = y;
+    }
+    
+    // list of getters and setters
+    
+    static char getSprite() {
+        return sprite; 
+    }
+    
+    static int getAttack() {
+        return attack;
+    }
+    
+    static int getHealthPotions() {
+        return healthPotions;
+    }
+    
+    static void setHealthPotions(int x) {
+        healthPotions = x; 
+    }
+    
+    static String getName() {
+        return name; 
+    }
+    
+    static int getHealth() {
+        return health; 
+    }
+    
+    static void setHealth(int x) {
+        health = x; 
+    }
+    
+    static int getX() {
+        return x_position; 
+    }
+    
+    static int getY() {
+        return y_position; 
+    }
+
+    // Get x direction. This gets the direction the player wants to move in. Left or Right.
+    int getX_Dir(int x, int player_x_position) {
+        int xx = player_x_position;
+
+        switch (x) {
+            case Input.LEFT: xx -= 1;
+                break;
+                
+            case Input.RIGHT: xx += 1; 
+                break;
+                
+            case Input.UP: xx = player_x_position; 
+                break;
+                
+            case Input.DOWN: xx = player_x_position;
+                 break;
+                     
+            default: xx = player_x_position;       
+        }
+        return xx; 
+    }
+    
+    // Get y direction. Up or Down. 
+    int getY_Dir(int y, int player_y_position) {
+        int yy = player_y_position;
+        
+        switch (y) {
+            case Input.UP: yy -= 1;
+                break;
+                
+            case Input.DOWN: yy += 1; 
+                 break;
+            
+            case Input.LEFT: yy = player_y_position;
+                break;
+                
+            case Input.RIGHT: yy = player_y_position;
+                break; 
+                
+            default: yy = player_y_position;       
+        }
+        return yy; 
+    }
+    
+    /* this is what actually gets the above desired direction to go in by passing in arguments to methods 
+    and then running checks to make sure the sprite isn't displayed over an existing sprite in the map array 
+    */
+    void setPosition() {
+        System.out.print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+        Scanner in = new Scanner(System.in);
+        int input = in.nextInt();
+        System.out.print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+        
+        int dirX = getX_Dir(input, x_position);
+        int dirY = getY_Dir(input, y_position);
+        
+        char getchar = Map.map[dirY][dirX];
+        
+        // Sets the x position
+        if ((dirX != x_position) && (getchar == Sprites.AREA)) {
+            x_position = dirX; 
+        } else {x_position = getX();}
+        //sets the y position
+        if ((dirY != y_position) && (getchar == Sprites.AREA)) {
+            y_position = dirY; 
+        } else {y_position = getY();}
+    } 
+}
