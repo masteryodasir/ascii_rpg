@@ -1,0 +1,14 @@
+package test;
+
+/* initialize the sprites (sprite is the term used in game dev for the image given to 
+an object, ex: the player object uses the @ 
+*/
+
+public class Sprites {
+        
+    static final char AREA = ' ';
+    static final char WALL = '#';  
+    static final char TREE = 'T';
+    static final char PLAYER = '@';
+    static final char ROBOT = 'R';
+}
