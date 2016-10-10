@@ -141,10 +141,12 @@ public class Player {
         // Sets the x position
         if ((dirX != x_position) && (getchar == Sprites.AREA)) {
             x_position = dirX; 
+            //if there's a sprite other than AREA or the x position doesn't move left or right of it's current position then stay the same
         } else {x_position = getX();}
         //sets the y position
         if ((dirY != y_position) && (getchar == Sprites.AREA)) {
             y_position = dirY; 
+            //if there's a sprite other than AREA or the y position doesn't move up or down of it's current position then stay the same
         } else {y_position = getY();}
     } 
 }
