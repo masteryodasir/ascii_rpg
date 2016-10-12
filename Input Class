@@ -1,0 +1,13 @@
+package test;
+
+/* basically have input identical to the right keypad on keyboard. 
+Need to figure out a way to make sure a player can't input a letter or char because 
+when you enter a non integer number it crashes the program 
+*/
+public class Input {
+    
+    static final int UP = 8; 
+    static final int DOWN = 2; 
+    static final int RIGHT = 6; 
+    static final int LEFT = 4; 
+}

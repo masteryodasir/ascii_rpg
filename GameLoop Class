@@ -1,0 +1,69 @@
+package test;
+
+public class GameLoop {
+    
+    public static void main (String[] args) {
+        boolean gameRunning =  true; 
+        String x = "Robot";
+        
+        // create objects and pass in arguments to initialize various properties for given object
+        // the player is basically (y location, x location, name, hp, attack, potions)
+        Player Ted = new Player(1, 1, "Ted", 30, 5, 1);
+        Robot Robotx = new Robot(3, 3, x);
+        Robot Robotz = new Robot(5, 5, x);
+        
+        //displays the first instance of the map 
+        Init_Map map = new Init_Map(); 
+        
+        // game loop begins so movement and battling don't stop 
+        while(gameRunning) {
+            // Movement 
+            Ted.setPosition();
+            
+            // after we move, the enemies move right after 
+            Robotx.setPosition();
+            Robotz.setPosition();
+            
+            //Map displays the new x and y locations using appropriate sprites and the new locations are 
+            // accessed by getters passed in. A concern of mine is the warning we're getting since 
+            // i'm passing in static methods of the player - possible resolutions? 
+            Output.displayMap(Ted.getY(), Ted.getX(), Robotx.getY(), Robotx.getX(), Robotx.getHealth(), Robotz.getY(), Robotz.getX(), Robotz.getHealth());
+            
+            /*Check for player colliding with enemy Robot, as long as given enemy object is still alive
+            then keep checking to see if the players x and y are next to its x and y 
+             one thing is that if the enemy dies then it still exists but i can't think of way to get rid of it altogether 
+            but the enemy sprite turns into an AREA sprite so that it "appears" to be dead, even tho it's still moving around 
+            but again, it won't try to battle us since it's hp is below 0 and you can't see it so its like its dead but
+            probably not the best way to do this
+            */
+            if (Robotx.getHealth() > 0) {
+                Robotx.collision();
+            }
+            
+            //display results if there was a battle. Whoever died, their sprite turns into an AREA sprite 
+            //Oh and if each check for battle method runs false you will see 2-3 more maps displayed because what's supposed to happen is that
+            //if there is a battle then that loops executes, and at the end the results display so it's like a new map displayed
+            // but i can't figure out how to do this either because there is no "clear screen" like in c++
+            Output.displayMap(Ted.getY(), Ted.getX(), Robotx.getY(), Robotx.getX(), Robotx.getHealth(), Robotz.getY(), Robotz.getX(), Robotz.getHealth());
+            
+            // each object has to check if the player is next to it.. this gets old much like the output.display method overloading 
+            // because each time a new enemy is adding to map have to create exact code for it to check for battle - resolution mayeb? 
+            if (Robotz.getHealth() > 0) {
+                Robotz.collision();
+            }
+            
+            Output.displayMap(Ted.getY(), Ted.getX(), Robotx.getY(), Robotx.getX(), Robotx.getHealth(), Robotz.getY(), Robotz.getX(), Robotz.getHealth());
+            
+            // this is the code for the view method I was talking about in output class
+            // uncomment this so it doesn't look so wierd 
+            Output.view(Ted.getY(), Ted.getX());
+            
+            // Gameover and end application 
+            if (Player.getHealth() <= 0) {
+                break; 
+            }
+        }
+    }
+}
+
+            

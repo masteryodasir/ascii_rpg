@@ -1,0 +1,190 @@
+package test;
+
+public class Output {
+    
+    /* below are several overloaded methods. What I came up with since I couldn't think of another way 
+    to do it was to overload the function based on how many enemy objects are created in the gameloop class. 
+    I feel like there may be a better way to do this as it gets tedious when you want more enemy objects and other objects
+    for that matter. I would have to just copy paste code and add in new parameters, quite annoying! 
+    Either way, the function takes the new x and y position of the character and enemies and actually then 
+    sets the sprite to the new coordinates and then displays all new data as output to console. 
+    
+    Another thing I'm working on but haven't implemented yet is actually displaying a fixed view.. 
+    so say the map is 50 in length and 50 width. Then just display a little area around the character/player 
+    that way the game world feels bigger and you don't see everything like enemies, shops etc in the beginning 
+    */
+    
+    static void displayMap (int y, int x) {
+        
+        for (int l = 0; l < Map.LENGTH; l++) {
+            for (int w = 0; w < Map.WIDTH; w++) {
+                
+                if(Map.map[l][w] == Sprites.WALL) {
+                    Map.map[l][w] = Sprites.WALL;
+                } else if(Map.map[l][w] == Sprites.TREE) {
+                    Map.map[l][w] = Sprites.TREE;
+                } else {
+                    Map.map[l][w] = Sprites.AREA;
+                }
+                     
+                if(Map.map[l][w] == Map.map[y][x]) {
+                    Map.map[y][x] = Sprites.PLAYER;
+                }
+                
+                System.out.print(Map.map[l][w]);
+
+            }
+            System.out.print("\n");
+        }   
+    }
+    
+    static void displayMapRobot (int ry, int rx) {
+        
+        for (int l = 0; l < Map.LENGTH; l++) {
+            for (int w = 0; w < Map.WIDTH; w++) {
+                
+                if(Map.map[l][w] == Sprites.WALL) {
+                    Map.map[l][w] = Sprites.WALL;
+                } else if(Map.map[l][w] == Sprites.TREE) {
+                    Map.map[l][w] = Sprites.TREE;
+                } else {
+                    Map.map[l][w] = Sprites.AREA;
+                }
+                     
+                if(Map.map[l][w] == Map.map[ry][rx]) {
+                    Map.map[ry][rx] = Sprites.ROBOT;
+                }
+                
+                System.out.print(Map.map[l][w]);
+
+            }
+            System.out.print("\n");
+        }   
+    }
+    
+    static void displayMap (int y, int x, int ry, int rx, int rHP) {
+        
+        for (int l = 0; l < Map.LENGTH; l++) {
+            for (int w = 0; w < Map.WIDTH; w++) {
+                
+                if(Map.map[l][w] == Sprites.WALL) {
+                    Map.map[l][w] = Sprites.WALL;
+                } else if(Map.map[l][w] == Sprites.TREE) {
+                    Map.map[l][w] = Sprites.TREE;
+                } else {
+                    Map.map[l][w] = Sprites.AREA;
+                }
+                     
+                if(Map.map[l][w] == Map.map[y][x] && Player.getHealth() > 0) {
+                    Map.map[y][x] = Sprites.PLAYER;
+                } else {
+                    Map.map[y][x] = Sprites.AREA; 
+                }
+                
+                if(Map.map[l][w] == Map.map[ry][rx] && rHP > 0) {
+                    Map.map[ry][rx] = Sprites.ROBOT;
+                } else {
+                    Map.map[ry][rx] = Sprites.AREA;
+                    if (Map.map[l][w] == Map.map[y][x]) {
+                        Map.map[y][x] = Sprites.PLAYER;
+                    }
+                }
+                
+                System.out.print(Map.map[l][w]);
+            }   
+            System.out.print("\n");
+        }
+    }
+    
+    static void displayMapRobot (int ry, int rx, int ryy, int rxx) {
+        
+        for (int l = 0; l < Map.LENGTH; l++) {
+            for (int w = 0; w < Map.WIDTH; w++) {
+                
+                if(Map.map[l][w] == Sprites.WALL) {
+                    Map.map[l][w] = Sprites.WALL;
+                } else if(Map.map[l][w] == Sprites.TREE) {
+                    Map.map[l][w] = Sprites.TREE;
+                } else {
+                    Map.map[l][w] = Sprites.AREA;
+                }
+                     
+                if(Map.map[l][w] == Map.map[ry][rx]) {
+                    Map.map[ry][rx] = Sprites.ROBOT;
+                }
+                
+                if(Map.map[l][w] == Map.map[ryy][rxx]) {
+                    Map.map[ryy][rxx] = Sprites.ROBOT;
+                }
+                
+                System.out.print(Map.map[l][w]);
+
+            }
+            System.out.print("\n");
+        }   
+    }
+    
+    static void displayMap (int y, int x, int ry, int rx, int rHP, int ryy, int rxx, int rrHP) {
+        
+        for (int l = 0; l < Map.LENGTH; l++) {
+            for (int w = 0; w < Map.WIDTH; w++) {
+                
+                if(Map.map[l][w] == Sprites.WALL) {
+                    Map.map[l][w] = Sprites.WALL;
+                } else if(Map.map[l][w] == Sprites.TREE) {
+                    Map.map[l][w] = Sprites.TREE;
+                } else {
+                    Map.map[l][w] = Sprites.AREA;
+                }
+                     
+                if(Map.map[l][w] == Map.map[y][x] && Player.getHealth() > 0) {
+                    Map.map[y][x] = Sprites.PLAYER;
+                } else {
+                    Map.map[y][x] = Sprites.AREA; 
+                }
+                
+                if(Map.map[l][w] == Map.map[ry][rx] && rHP > 0) {
+                    Map.map[ry][rx] = Sprites.ROBOT;
+                } else {
+                    Map.map[ry][rx] = Sprites.AREA;
+                    if (Map.map[l][w] == Map.map[y][x]) {
+                        Map.map[y][x] = Sprites.PLAYER;
+                    }
+                }
+                
+                if(Map.map[l][w] == Map.map[ryy][rxx] && rrHP > 0) {
+                    Map.map[ryy][rxx] = Sprites.ROBOT;
+                } else {
+                    Map.map[ryy][rxx] = Sprites.AREA;
+                    if (Map.map[l][w] == Map.map[y][x]) {
+                        Map.map[y][x] = Sprites.PLAYER;
+                    }
+                }
+                
+                System.out.print(Map.map[l][w]);
+
+            }
+            
+            System.out.print("\n");
+        }   
+
+    }
+    
+    static void view(int y, int x) {
+        System.out.print(Map.map[y-1][x-1]);
+        System.out.print(Map.map[y-1][x]);
+        System.out.print(Map.map[y-1][x+1]);
+        System.out.print("\n");
+        System.out.print(Map.map[y][x-1]);
+        if (Map.map[Player.getY()][Player.getX()] == Sprites.PLAYER){
+        System.out.print("hello");
+        }
+        System.out.print(Map.map[y][x+1]);
+        System.out.print("\n");
+        System.out.print(Map.map[y+1][x-1]);
+        System.out.print(Map.map[y+1][x]);
+        System.out.print(Map.map[y+1][x+1]);
+        System.out.print("\n");
+    }
+}
+    

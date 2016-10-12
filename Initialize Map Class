@@ -1,0 +1,75 @@
+package test;
+
+import java.util.Random; 
+
+public class Init_Map { 
+    
+    private void initBorder() {
+        // TOP WALLS
+        for (int l = 0; l < 1; l++) {
+            for (int w = 0; w < Map.WIDTH; w++) {
+                Map.map[l][w] = Sprites.WALL;
+            }
+        }
+        // BOTTOM WALLS
+        for (int l = 7; l < 8; l++) {
+            for (int w = 0; w < Map.WIDTH; w++) {
+                Map.map[l][w] = Sprites.WALL;
+            }
+        }
+        // LEFT WALLS
+        for (int l = Map.LEFT_BORDER; l < Map.LENGTH; l++) {
+            for (int w = Map.LEFT_BORDER; w < 1; w++) {
+                Map.map[l][w] = Sprites.WALL;
+            }
+        }
+        // RIGHT WALLS
+        for (int l = Map.LEFT_BORDER; l < Map.LENGTH; l++) {
+            for (int w = 7; w < Map.WIDTH; w++) {
+                Map.map[l][w] = Sprites.WALL;
+            }
+        }
+    }
+    
+    private void initObjects() {
+        Random rand = new Random();
+        
+        for (int l = 0; l < Map.LENGTH; l++) {
+            for (int w = 0; w < Map.WIDTH; w++) {
+                
+                int length = rand.nextInt(Map.LENGTH);
+                int width = rand.nextInt(Map.WIDTH);
+                
+                if (Map.map[l][w] != Sprites.WALL && Map.map[l][w] != Sprites.ROBOT && Map.map[l][w] != Sprites.PLAYER) {
+                    Map.map[l][w] = Sprites.AREA;  
+                }
+                /* this code here initializes trees randomly in the map granted there isn't another sprite in one of the map array elements 
+                uncomment this if you want to see how it works
+                if (Map.map[length][width] != Sprites.WALL && Map.map[length][width] != Sprites.PLAYER && Map.map[length][width] != Sprites.ROBOT) {
+                    Map.map[length][width] = Sprites.TREE;
+                }*/
+            }
+        }
+    }
+    
+    private void initMap() {
+        // initialize the first display of the map array (ie. Game World) 
+        for (int l = 0; l < Map.LENGTH; l++) {
+            for (int w = 0; w < Map.WIDTH; w++) {
+                
+                System.out.print(Map.map[l][w]);
+            }
+            System.out.print("\n");
+        } 
+    }
+    
+    Init_Map() {
+        /* constructor calls all inits, but might be a better way to do this.. did get a warning about "overidable methods in constructor" 
+        but I was able to clear the warning by making the methods private and they are only ever initialized once from the beginning of the game loop
+        .. not sure if that's good programming practices, but its a temporary work for now LOL 
+        */
+        initBorder();
+        initObjects();
+        initMap();
+    }
+}
